@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc Mừng Sinh Nhật 17/06 ✨</title>
+    <style>
+        /* CSS RESET & BASE */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ffe5ec 0%, #ffb3c6 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #4a4a4a;
+        }
+
+        /* BACKGROUND CANVAS */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* MAIN INTERFACE (SWEET BOX) */
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.92);
+            border: 3px solid #ff85a1;
+            border-radius: 20px;
+            padding: 35px 30px;
+            z-index: 10;
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.2);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+        }
+
+        .container.success-border {
+            border-color: #ff4d6d;
+            box-shadow: 0 20px 45px rgba(255, 77, 109, 0.4);
+            background: #fff0f3;
+        }
+
+        /* CAKE DECORATION EFFECT (CSS ART) */
+        .cake-wrapper {
+            margin: 10px auto 25px;
+            width: 100px;
+            height: 100px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .cake {
+            width: 90px;
+            height: 50px;
+            background: #ffb3c6;
+            border-radius: 10px 10px 4px 4px;
+            position: relative;
+            border-bottom: 4px solid #ff758f;
+        }
+        .cake::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 15px;
+            background: #fff0f3;
+            border-radius: 10px 10px 0 0;
+        }
+        .cream-drops {
+            position: absolute;
+            top: 12px; left: 0; width: 100%; height: 10px;
+            background: image-set();
+            display: flex; justify-content: space-around;
+        }
+        .drop {
+            width: 12px; height: 12px; background: #fff0f3; border-radius: 50%;
+        }
+        .candle {
+            width: 8px; height: 30px;
+            background: linear-gradient(to bottom, #ffccd5, #ff85a1);
+            position: absolute; top: -26px; left: 41px;
+            border-radius: 2px;
+        }
+        .flame {
+            width: 12px; height: 18px;
+            background: #ffb703;
+            border-radius: 50% 50% 20% 20%;
+            position: absolute; top: -45px; left: 39px;
+            animation: flicker 0.6s ease-in-out infinite alternate;
+            display: none; /* Chỉ hiện khi giải mã đúng */
+            box-shadow: 0 0 10px #ffb703;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-2deg); }
+            100% { transform: scale(1.1) rotate(3deg); opacity: 0.9; }
+        }
+
+        /* TEXT STYLES */
+        h2.title {
+            font-size: 1.3rem;
+            color: #ff4d6d;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .status-zone {
+            font-size: 0.95rem;
+            color: #6c757d;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* INPUT & BUTTON */
+        .input-zone {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .input-zone label {
+            font-size: 0.9rem;
+            color: #ff758f;
+            font-weight: 600;
+        }
+
+        .input-field {
+            background: #fff;
+            border: 2px solid #ffb3c6;
+            padding: 12px;
+            color: #ff4d6d;
+            font-size: 1.3rem;
+            text-align: center;
+            letter-spacing: 4px;
+            border-radius: 12px;
+            outline: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            border-color: #ff4d6d;
+            box-shadow: 0 0 10px rgba(255, 77, 109, 0.15);
+        }
+        #special{
+            color: red;
+        }
+        .crush{
+            max-width: 80%;
+            height: fit-content;
+        }
+        .btn-submit {
+            background: #ff4d6d;
+            color: #fff;
+            border: none;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(255, 77, 109, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background: #ff758f;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.4);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        /* LETTER CONTENT (CELEBRATION) */
+        .gift-content {
+            display: none;
+            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .gift-content h1 {
+            font-size: 2rem;
+            color: #ff4d6d;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .letter-body {
+            color: #5c5c5c;
+            font-size: 1rem;
+            line-height: 1.7;
+            text-align: left;
+            background: #ffffff;
+            border: 1px dashed #ffb3c6;
+            padding: 20px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            max-height: 260px;
+            overflow-y: auto;
+        }
+
+        .letter-body p {
+            margin-bottom: 10px;
+        }
+
+        .heart {
+            color: #ff4d6d;
+            font-size: 1.3rem;
+            display: inline-block;
+            animation: pulse 0.6s infinite alternate;
+        }
+
+        @keyframes pulse {
+            to { transform: scale(1.25); }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="visualCanvas"></canvas>
+
+    <div class="container" id="mainBox">
+        <div class="cake-wrapper">
+            <div class="flame" id="candleFlame"></div>
+            <div class="candle"></div>
+            <div class="cake">
+                <div class="cream-drops">
+                    <div class="drop"></div>
+                    <div class="drop"></div>
+                    <div class="drop"></div>
+                    <div class="drop"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="lockScreen">
+            <h2 class="title">Có một món quà nhỏ đang chờ cậu... ✨</h2>
+            <div class="status-zone">
+                <p style="margin-top: 5px; color: #ff758f; font-weight: 500;">Cậu hãy nhập chiếc mật mã ngọt ngào để mở quà nhé!</p>
+            </div>
+
+            <div class="input-zone">
+                <label for="passcode">MẬT MÃ TRUY CẬP (Gợi ý: ddmmyyyy):</label>
+                <input type="text" id="passcode" class="input-field" maxlength="8"  autocomplete="off">
+                <button class="btn-submit" onclick="verifyCode()">THẮP NẾN & MỞ QUÀ 🎂</button>
+            </div>
+        </div>
+
+        <div id="giftScreen" class="gift-content">
+            <h1>HAPPY BIRTHDAY! 🎉</h1>
+            <div class="letter-body">
+                <p>Gửi cậu,</p>
+                <img class = "crush" src="./cute_girl.jpg" alt="My Crush :D">
+                <p>Hôm nay là một ngày cực kỳ đặc biệt - ngày <i id = "special">17/06/2026</i>.</p>
+                <p>Happy Birthday to my favorite person! 
+                    Trong rất nhiều điều tuyệt vời đã xảy ra trong năm qua, 
+                    việc được quen biết và trò chuyện cùng cậu là điều khiến 
+                    tớ cảm thấy hạnh phúc nhất. Hôm nay cậu bước sang tuổi mới, 
+                    tớ không biết chúc gì hơn ngoài việc mong cậu luôn được bao quanh 
+                    bởi những niềm vui giản dị nhưng chân thành nhất. Cậu biết không,
+                     nụ cười của cậu chính là thứ khiến ngày của tớ trở nên tươi sáng hơn hẳn. 
+                     Hy vọng tuổi mới sẽ mang đến cho cậu thật nhiều cơ hội mới, nhiều trải nghiệm 
+                     đáng nhớ và tất nhiên, tớ rất mong sẽ là người cùng cậu lưu giữ những khoảnh khắc đó. 
+                     Hãy tận hưởng ngày hôm nay thật trọn vẹn nhé, vì cậu xứng đáng với mọi điều tốt đẹp nhất 
+                     trên thế giới này!</p>
+                <img class = "crush" src="./lucky_girl.jpg" alt="My Crush :D">
+                <!-- <p>Chúc cậu tuổi mới luôn rạng rỡ, ngập tràn niềm vui, thanh xuân rực rỡ và luôn là "phiên bản giới hạn" tuyệt vời nhất của chính mình nhé. Mong rằng mọi dự định và ước mơ của cậu đều sẽ sớm được compile thành công mà không gặp bất kỳ một bug nào!</p> -->
+                <p>Sinh nhật vui vẻ nha! <span class="heart">♥</span></p>
+            </div>
+            <div style="font-size: 0.85rem; color: #ff758f; font-weight: 500;">[Trạng thái: Gửi trao bình yên thành công]</div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. CANVAS EFFECT: TRÁI TIM & BONG BÓNG BAY ---
+        const canvas = document.getElementById('visualCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        const shapes = [];
+        const maxShapes = 30;
+        let isUnlocked = false;
+
+        class FloatingShape {
+            constructor() {
+                this.reset();
+                this.y = Math.random() * height; // Rải đều hạt trên màn hình ban đầu
+            }
+            reset() {
+                this.x = Math.random() * width;
+                this.y = height + Math.random() * 20;
+                this.size = 6 + Math.random() * 12;
+                this.speed = 0.8 + Math.random() * 1.5;
+                this.type = Math.random() > 0.5 ? 'heart' : 'circle';
+                this.opacity = 0.3 + Math.random() * 0.5;
+                this.swing = Math.random() * 2;
+                this.swingSpeed = 0.01 + Math.random() * 0.02;
+                this.degree = 0;
+            }
+            update() {
+                this.y -= this.speed;
+                this.degree += this.swingSpeed;
+                this.x += Math.sin(this.degree) * 0.4;
+                
+                if (this.y < -20) {
+                    this.reset();
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = isUnlocked ? '#ff4d6d' : '#ff85a1';
+                
+                if (this.type === 'circle') {
+                    // Vẽ bong bóng tròn lấp lánh
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                } else {
+                    // Vẽ trái tim nhỏ dễ thương
+                    ctx.beginPath();
+                    let topEcurveX = this.x + this.size / 2;
+                    let topEcurveY = this.y - this.size / 2;
+                    ctx.moveTo(this.x, this.y);
+                    ctx.bezierCurveTo(this.x - this.size / 2, this.y - this.size / 2, this.x - this.size, topEcurveY, this.x - this.size, this.y - this.size / 4);
+                    ctx.bezierCurveTo(this.x - this.size, this.y + this.size / 3, this.x - this.size / 2, this.x + this.size * 0.6, this.x, this.y + this.size);
+                    ctx.bezierCurveTo(this.x + this.size / 2, this.y + this.size * 0.6, this.x + this.size, this.y + this.size / 3, this.x + this.size, this.y - this.size / 4);
+                    ctx.bezierCurveTo(this.x + this.size, topEcurveY, topEcurveX, this.y - this.size / 2, this.x, this.y);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < maxShapes; i++) {
+            shapes.push(new FloatingShape());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            shapes.forEach(shape => {
+                shape.update();
+                shape.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+
+        // --- 2. QUY TRÌNH XỬ LÝ ĐỒNG BỘ MẬT MÃ ---
+        function verifyCode() {
+            const inputVal = document.getElementById('passcode').value.trim();
+            const lockScreen = document.getElementById('lockScreen');
+            const giftScreen = document.getElementById('giftScreen');
+            const mainBox = document.getElementById('mainBox');
+            const flame = document.getElementById('candleFlame');
+            
+            // Khớp chính xác chuỗi mật mã sinh nhật cậu yêu cầu
+            if (inputVal === "17062007") {
+                isUnlocked = true;
+                
+                // 1. Thắp nến cho bánh kem (Kích hoạt ngọn lửa CSS)
+                flame.style.display = 'block';
+
+                // Tạo độ trễ ngắn 0.4s để crush nhìn thấy nến thắp lên trước khi mở hộp thư
+                setTimeout(() => {
+                    mainBox.classList.add('success-border');
+                    lockScreen.style.display = 'none';
+                    giftScreen.style.display = 'block';
+                    
+                    // Tăng số lượng hạt bong bóng bay lên ăn mừng thương vụ thành công
+                    for(let i=0; i<20; i++) {
+                        let newShape = new FloatingShape();
+                        newShape.y = height + Math.random() * 100;
+                        newShape.speed *= 1.8; // Bay nhanh hơn một chút tạo hiệu ứng vui tươi
+                        shapes.push(newShape);
+                    }
+                }, 400);
+                
+            } else {
+                alert("Mật mã chưa chính xác rồi cậu ơi, hãy kiểm tra lại ngày sinh nhật nhé! 💕");
+                document.getElementById('passcode').value = "";
+            }
+        }
+
+        // Bắt sự kiện gõ Enter tiện lợi
+        document.getElementById('passcode').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                verifyCode();
+            }
+        });
+    </script>
+</body>
+</html>
